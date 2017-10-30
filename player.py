@@ -24,7 +24,7 @@ class Player:
 		print('\nInventory:')
 		for item in self.inventory:
 			if item == self.most_powerful_weapon():
-				print('* {} -'.format(item)) # ◂
+				print('* {} +'.format(item)) # ◂
 			else:
 				print('* {}'.format(item))
 
