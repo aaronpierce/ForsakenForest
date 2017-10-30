@@ -27,7 +27,7 @@ class Skeleton(Enemy):
 class Ork(Enemy):
 	def __init__(self):
 
-		self.name = 'Ogre'
+		self.name = 'Ork'
 		self.hp = 30
 		self.str = 5
 		self.dmg = 12
@@ -62,7 +62,7 @@ def enemy_spawn():
 	r = random.random()
 	if r < 0.25:
 		return [GruesomeSpider(),
-				'A giant spider jumps down from its web in front of you!',
+				'A gruesome spider jumps down from its web in front of you!',
 				'The corpse of a dead spider rots on the ground.']
 	elif r < 0.50:
 		return [Skeleton(),
