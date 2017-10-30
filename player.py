@@ -1,5 +1,6 @@
 import items
 import world
+import random
 
 class Player:
 	
@@ -13,6 +14,7 @@ class Player:
 		self.y = world.start_tile_location[1]
 		self.hp = 100
 		self.gold = 5
+		self.str = 1
 		self.victory = False
 
 	def is_alive(self):
@@ -21,8 +23,12 @@ class Player:
 	def print_inventory(self):
 		print('\nInventory:')
 		for item in self.inventory:
-			print('* {}'.format(item))
+			if item == self.most_powerful_weapon():
+				print('* {}(e)'.format(item))
+			else:
+				print('* {}'.format(item))
 		print('Gold: {}'.format(self.gold))
+		print('Health: {}'.format(self.hp))
 
 	def most_powerful_weapon(self):
 		max_damage = 0
@@ -42,8 +48,9 @@ class Player:
 		best_weapon = self.most_powerful_weapon()
 		room = world.tile_at(self.x, self.y)
 		enemy = room.enemy
-		print('\nYou use {} against {} dealing {} damage!!\n'.format(best_weapon.name, enemy.name, best_weapon.damage))
-		enemy.hp -= best_weapon.damage
+		player_dmg = int(round(((self.str / 100) + 1) * random.randint(0, best_weapon.damage)))
+		print('\nYou use {} against {} dealing {} damage!!\n'.format(best_weapon.name, enemy.name, player_dmg))
+		enemy.hp -= player_dmg
 		if not enemy.is_alive():
 			print('You killed the {}'.format(enemy.name))
 		else:
