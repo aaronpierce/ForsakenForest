@@ -38,10 +38,14 @@ class EnemyTile(MapTile):
 		self.dead_text = enemy[2]
 			
 	def modify_player(self, player):
-		enemy_dmg = int(round(((self.enemy.str / 100) + 1) * random.randint(0, self.enemy.dmg)))
+		enemy_dmg = int(round(((self.enemy.str / 100) + 1.04) * random.randint(0, self.enemy.dmg)))
+		enemy_max = int(round(((self.enemy.str / 100) + 1.04) * self.enemy.dmg))
 		if self.enemy.is_alive():
 			player.hp -= enemy_dmg
-			print('Enemy does {} damage. You have {} HP remaining.\n'.format(enemy_dmg, player.hp))
+			if enemy_dmg == enemy_max:
+				print('Enemy does {} damage. You have {}* HP remaining.\n'.format(enemy_dmg, player.hp))
+			else:
+				print('Enemy does {} damage. You have {} HP remaining.\n'.format(enemy_dmg, player.hp))
 		elif not self.enemy.is_alive() and not self.drop_claimed:
 			self.drop_claimed = True
 			if isinstance(self.drop, items.Weapon) or isinstance(self.drop, items.Consumable):
@@ -244,14 +248,6 @@ world_dsl = '''
 |FG|  |FG|EN|NT|FG|
 |NT|FI|EN|  |  |EN|
 '''
-
-#Original Map(v1)
-#world_dsl = '''
-#|  |VT|  |
-#|  |EN|  |
-#|EN|ST|EN|
-#|  |EN|  |
-#'''
 
 tile_type_dict = {
 	"VT" : VictoryTile,
