@@ -89,7 +89,7 @@ class TraderTile(MapTile):
 		for i, item in enumerate(seller.inventory, 1):
 			print('{}. {} - {} Gold'.format(i, item.name, item.value))
 		while True:
-			user_input = input('Choose and item or press Q to exit: ')
+			user_input = input('\nChoose and item or press Q to exit: ')
 			if user_input in ['Q', 'q']:
 				return
 			else:
@@ -120,10 +120,12 @@ class TraderTile(MapTile):
 			if user_input in ['Q', 'q']:
 				return
 			elif user_input in ['B', 'b']:
-				print("\nHere's whats available to buy: (Current Gold: {})".format(player.gold))
+				player.status()
+				print("Here is what\'s available to buy: ")
 				self.trade(player, buyer=player, seller=self.trader)
 			elif user_input in ['S', 's']:
-				print("\nHere's whats avaliable to sell: ")
+				player.status()
+				print("Here is what\'s avaliable to sell: ")
 				self.trade(player, buyer=self.trader, seller=player)
 			else:
 				print("Invalid choice!")
