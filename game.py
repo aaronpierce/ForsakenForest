@@ -102,6 +102,7 @@ play()
 #Give the player magic attacks that deplete mana. Allow mana to replenish a little bit each
 #time the player moves into a room and/or with a potion/or over real time.
 #Have health gain over time?
+#Delay messages to the screen.
 #Allow the player to wear armor which reduces enemy attacks by a percentage.
 #Use player leveling system
 #Save/Load player saves
