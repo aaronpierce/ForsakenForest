@@ -27,8 +27,11 @@ class Player:
 				print('* {}(e)'.format(item))
 			else:
 				print('* {}'.format(item))
-		print('Gold: {}'.format(self.gold))
-		print('Health: {}'.format(self.hp))
+
+	def status(self):
+		print('_________Status_________')
+		print('Health: {}/100  Gold: {}'.format(self.hp, self.gold))
+		print('¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯')
 
 	def most_powerful_weapon(self):
 		max_damage = 0
@@ -59,23 +62,26 @@ class Player:
 	def heal(self):
 		consumables = [item for item in self.inventory if isinstance(item, items.Consumable)]
 		if not consumables:
-			print('You don\'t have any items to heal you!')
-			return 
-		print('Choose an item to heal: ')
+			print('\nYou don\'t have any items to heal you!')
+			return
+		print('\nHere is what\'s avaliable to heal: ')
 		for i, item in enumerate(consumables, 1):
 			print('{}. {}'.format(i, item))
-		
+
 		valid = False
 		while not valid:
-			choice = input('> ')
-			try:
-				to_eat = consumables[int(choice) - 1]
-				self.hp = min(100, self.hp + to_eat.healing_value)
-				self.inventory.remove(to_eat)
-				print('Current HP: {}'.format(self.hp))
-				valid = True
-			except (ValueError, IndexError):
-				print('Invalid choice, try again.')
+			choice = input('\nChoose an item or press Q to exit: ')
+			if choice in ['Q', 'q']:
+				return
+			else:
+				try:
+					to_eat = consumables[int(choice) - 1]
+					self.hp = min(100, self.hp + to_eat.healing_value)
+					self.inventory.remove(to_eat)
+					print('\nYou\'ve gained {} health!'.format(to_eat.healing_value))
+					valid = True
+				except (ValueError, IndexError):
+					print('Invalid choice, try again.')
 				
 	def trade(self):
 		room = world.tile_at(self.x, self.y)
