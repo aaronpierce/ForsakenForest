@@ -19,7 +19,7 @@ class Fist(Weapon):
 	def __init__(self):
 		self.name = "your fist"
 		self.description = 'Bare hands'
-		self.damage = 1
+		self.damage = 3
 		self.value = 0
 
 class RustyDagger(Weapon):
