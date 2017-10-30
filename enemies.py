@@ -10,36 +10,41 @@ class Enemy:
 	def is_alive(self):
 		return self.hp > 0
 		
-class GiantSpider(Enemy):
+class GruesomeSpider(Enemy):
 	def __init__(self):
-		self.name = 'Giant Spider'
+		self.name = 'Gruesome Spider'
 		self.hp = 10
-		self.damage = 2
+		self.str = 1
+		self.dmg = 5
 
 class Skeleton(Enemy):
 	def __init__(self):
 		self.name = 'Skeleton'
 		self.hp = 20
-		self.damage = 5
+		self.str = 2
+		self.dmg = 10
 		
 class Ork(Enemy):
 	def __init__(self):
 
 		self.name = 'Ogre'
 		self.hp = 30
-		self.damage = 10
+		self.str = 5
+		self.dmg = 12
 		
 class BatColony(Enemy):
 	def __init__(self):
 		self.name = 'Colony of Bats'
 		self.hp = 70
-		self.damage = 4
+		self.str = 2
+		self.dmg = 6
 		
 class RockMonster(Enemy):
 	def __init__(self):
 		self.name = 'Rock Monster'
 		self.hp = 60
-		self.damage = 15
+		self.str = 10
+		self.dmg = 20
 		
 class Boss(Enemy):
 	def __init__(self):
@@ -49,20 +54,20 @@ class AncientDragon(Boss):
 	def __init__(self):
 		self.name = 'Ancient Dragon'
 		self.hp = 150
-		self.damage = 25
-
+		self.str = 10
+		self.dmg = 30
 		
 
 def enemy_spawn():
 	r = random.random()
 	if r < 0.25:
-		return [GiantSpider(),
+		return [GruesomeSpider(),
 				'A giant spider jumps down from its web in front of you!',
 				'The corpse of a dead spider rots on the ground.']
 	elif r < 0.50:
 		return [Skeleton(),
-				'Bones are thrown your way. A skeletal being comes your way.',
-				'A collection of bones cover the ground.n']
+				'Suddenly bones coming flying toward you. A erie looking skeletal starts running toward you!',
+				'A collection of bones cover the ground.']
 	elif r < 0.80:
 		return [Ork(),
 				'An ork is blocking your path!',
