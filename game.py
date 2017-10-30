@@ -68,7 +68,6 @@ play()
 #Allow the player to wear armor which reduces enemy attacks by a percentage.
 #Add player strength and calculate a hit including weapons.
 #Use player leveling system
-#Make enemy spawn table for tiles
 #Save/Load player saves
 #Offer play again
 #Show equipped items and allow equipping
