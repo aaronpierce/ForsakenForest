@@ -97,6 +97,12 @@ class HealingPotion(Consumable):
 		self.healing_value = 50
 		self.value = 60
 
+class PillofDarkness(Consumable):
+	def __init__(self):
+		self.name = 'Pill of Darkness'
+		self.healing_value = 100
+		self.value = 150
+
 class Item():
 	def __init__(self):
 		raise NotImplementedError('Do not create raw Item objects!')
@@ -133,10 +139,10 @@ def drop_table(itemOnly = False):
 
 def rare_drop_table():
 	r = random.random()
-	if r < 0.70:
+	if r < 0.50:
 		drop = LunarSword()
 	else:
-		drop = AncientSpear()
+		drop = PillofDarkness()
 	return drop
 
 #Dict for using override function for player
@@ -145,5 +151,6 @@ override = {
 	LunarSword().name: LunarSword(),
 	HealingPotion().name: HealingPotion(),
 	AncientSpear().name: AncientSpear(),
-	AncientKey().name: AncientKey()
+	AncientKey().name: AncientKey(),
+	PillofDarkness().name: PillofDarkness()
 }
