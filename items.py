@@ -54,8 +54,8 @@ class AncientSpear(Weapon):
 	def __init__(self):
 		self.name = 'Ancient Spear'
 		self.description = 'An old spear with great hidden power'
-		self.damage = 60
-		self.value = 450
+		self.damage = 70
+		self.value = 550
 
 class LunarSword(Weapon):
 	def __init__(self):
