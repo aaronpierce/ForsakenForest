@@ -89,7 +89,7 @@ class TraderTile(MapTile):
 		equipped = player.most_powerful_weapon()
 		for i, item in enumerate(seller.inventory, 1):
 			if seller == player and item == equipped:
-				print('{}. {} - {} Gold ◂'.format(i, item.name, item.value))
+				print('{}. {} - {} Gold -'.format(i, item.name, item.value)) #◂
 			else:
 				print('{}. {} - {} Gold'.format(i, item.name, item.value))
 		while True:
