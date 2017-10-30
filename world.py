@@ -86,10 +86,14 @@ class TraderTile(MapTile):
 		self.y = y
 
 	def trade(self, player, buyer, seller):
+		equipped = player.most_powerful_weapon()
 		for i, item in enumerate(seller.inventory, 1):
-			print('{}. {} - {} Gold'.format(i, item.name, item.value))
+			if seller == player and item == equipped:
+				print('{}. {} - {} Gold ◂'.format(i, item.name, item.value))
+			else:
+				print('{}. {} - {} Gold'.format(i, item.name, item.value))
 		while True:
-			user_input = input('\nChoose and item or press Q to exit: ')
+			user_input = input('\nChoose an item or press Q to exit: ')
 			if user_input in ['Q', 'q']:
 				return
 			else:
