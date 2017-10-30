@@ -24,10 +24,10 @@ class Skeleton(Enemy):
 		self.str = 2
 		self.dmg = 10
 		
-class Ork(Enemy):
+class Orc(Enemy):
 	def __init__(self):
 
-		self.name = 'Ork'
+		self.name = 'Orc'
 		self.hp = 30
 		self.str = 5
 		self.dmg = 12
@@ -69,7 +69,7 @@ def enemy_spawn():
 				'Suddenly bones coming flying toward you. A erie looking skeletal starts running toward you!',
 				'A collection of bones cover the ground.']
 	elif r < 0.80:
-		return [Ork(),
+		return [Orc(),
 				'An ork is blocking your path!',
 				'A dead ork reminds you of your triumph.']
 	elif r < 0.95:
