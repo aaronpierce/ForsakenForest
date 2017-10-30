@@ -43,9 +43,9 @@ class EnemyTile(MapTile):
 		if self.enemy.is_alive():
 			player.hp -= enemy_dmg
 			if enemy_dmg == enemy_max:
-				print('Enemy does {} damage. You have {}* HP remaining.\n'.format(enemy_dmg, player.hp))
+				print('Enemy does {}* damage. You have {} HP remaining.\n'.format(enemy_dmg, player.hp))
 			else:
-				print('Enemy does {} damage. You have {} HP remaining.\n'.format(enemy_dmg, player.hp))
+				print('Enemy does {}* damage. You have {} HP remaining.\n'.format(enemy_dmg, player.hp))
 		elif not self.enemy.is_alive() and not self.drop_claimed:
 			self.drop_claimed = True
 			if isinstance(self.drop, items.Weapon) or isinstance(self.drop, items.Consumable):

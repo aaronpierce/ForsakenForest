@@ -17,7 +17,7 @@ class Rock(Weapon):
 
 class Fist(Weapon):
 	def __init__(self):
-		self.name = "your fist"
+		self.name = "Fist"
 		self.description = 'Bare hands'
 		self.damage = 3
 		self.value = 0
