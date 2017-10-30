@@ -15,6 +15,8 @@ class Trader(NonPlayableCharacter):
 		self.inventory = [
 			items.CrustyBread(),
 			items.CrustyBread(),
+			items.GreenApple(),
+			items.GreenApple(),
 			items.HealingPotion(),
 			items.HealingPotion(),
 			items.WornSword(),
