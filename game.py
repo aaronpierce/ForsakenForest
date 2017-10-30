@@ -4,8 +4,7 @@ import world
 import items
 
 def play():
-	print(title)
-	print()
+	showTitle()
 	world.parse_world_dsl()
 	player = Player()
 	while player.is_alive() and not player.victory:
@@ -60,25 +59,9 @@ def choose_action(room, player):
 		else:
 			print('\nInvalid Action!\n')
 
-play()
 
-
-#NOTES:
-#Add another NPC who can give a quest. Then, add another tile type where the player
-#completes something and returns to completes the quest with rewards.
-#Puzzle Tile?
-#Give the player magic attacks that deplete mana. Allow mana to replenish a little bit each
-#time the player moves into a room and/or with a potion/or over real time.
-#Have health gain over time?
-#Allow the player to wear armor which reduces enemy attacks by a percentage.
-#Use player leveling system
-#Save/Load player saves
-#Offer play again
-#Allow item equipping. (Currently based on strongest item)
-#Add a class/tier/level to weapons
-#Allow above or below ground areas
-
-title = '''
+def showTitle():
+	print('''
                          .                                               
                      /   ))     |\         )               ).           
                c--. (\  ( `.    / )  (\   ( `.     ).     ( (           
@@ -106,6 +89,24 @@ title = '''
                    |_|\_\_|_| |_|\__, |\__,_|\___/|_| |_| |_|
                                   __/ |                      
                                  |___/                 
-'''
+	''')
 
-into = '''
+
+play()
+
+
+#NOTES:
+#Add another NPC who can give a quest. Then, add another tile type where the player
+#completes something and returns to completes the quest with rewards.
+#Puzzle Tile?
+#Give the player magic attacks that deplete mana. Allow mana to replenish a little bit each
+#time the player moves into a room and/or with a potion/or over real time.
+#Have health gain over time?
+#Allow the player to wear armor which reduces enemy attacks by a percentage.
+#Use player leveling system
+#Save/Load player saves
+#Offer play again
+#Allow item equipping. (Currently based on strongest item)
+#Add a class/tier/level to weapons
+#Allow above or below ground areas
+
