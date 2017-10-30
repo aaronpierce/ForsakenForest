@@ -51,8 +51,12 @@ class Player:
 		weapon = self.most_powerful_weapon()
 		room = world.tile_at(self.x, self.y)
 		enemy = room.enemy
-		player_dmg = int(round(((self.str / 100) + 1) * random.randint(0, weapon.damage)))
-		print('\nYou use {} against {} dealing {} damage!!\n'.format(weapon.name, enemy.name, player_dmg))
+		player_dmg = int(round(((self.str / 100) + 1.04) * random.randint(0, weapon.damage)))
+		player_max = int(round(((self.str / 100) + 1.04) * weapon.damage))
+		if player_dmg == player_max:
+			print('\nYou use {} against {} dealing {}* damage!!\n'.format(weapon.name, enemy.name, player_dmg))
+		else:
+			print('\nYou use {} against {} dealing {} damage!!\n'.format(weapon.name, enemy.name, player_dmg))
 		enemy.hp -= player_dmg
 		if not enemy.is_alive():
 			print('You killed the {}'.format(enemy.name))
