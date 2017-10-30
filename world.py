@@ -38,9 +38,10 @@ class EnemyTile(MapTile):
 		self.dead_text = enemy[2]
 			
 	def modify_player(self, player):
+		enemy_dmg = int(round(((self.enemy.str / 100) + 1) * random.randint(0, self.enemy.dmg)))
 		if self.enemy.is_alive():
-			player.hp = player.hp - self.enemy.damage
-			print('Enemy does {} damage. You have {} HP remaining.\n'.format(self.enemy.damage, player.hp))
+			player.hp -= enemy_dmg
+			print('Enemy does {} damage. You have {} HP remaining.\n'.format(enemy_dmg, player.hp))
 		elif not self.enemy.is_alive() and not self.drop_claimed:
 			self.drop_claimed = True
 			if isinstance(self.drop, items.Weapon) or isinstance(self.drop, items.Consumable):
@@ -182,9 +183,10 @@ class BossTile(MapTile):
 		self.key_claimed = False
 
 	def modify_player(self, player):
+		enemy_dmg = int(round(((self.enemy.str / 100) + 1) * random.randint(0, self.enemy.dmg)))
 		if self.enemy.is_alive():
-			player.hp = player.hp - self.enemy.damage
-			print('Enemy does {} damage. You have {} HP remaining.\n'.format(self.enemy.damage, player.hp))
+			player.hp -=  enemy_dmg
+			print('Enemy does {} damage. You have {} HP remaining.\n'.format(enemy_dmg, player.hp))
 		if not self.key_claimed and not self.enemy.is_alive():
 			self.key_claimed = True
 			player.inventory.append(items.AncientKey())
