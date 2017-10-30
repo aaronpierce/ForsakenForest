@@ -4,7 +4,7 @@ import world
 import items
 
 def play():
-	showTitle()
+	show_title()
 	world.parse_world_dsl()
 	player = Player()
 	while player.is_alive() and not player.victory:
@@ -60,7 +60,7 @@ def choose_action(room, player):
 			print('\nInvalid Action!\n')
 
 
-def showTitle():
+def show_title():
 	print('''
                          .                                               
                      /   ))     |\         )               ).           
