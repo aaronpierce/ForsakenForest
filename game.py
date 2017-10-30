@@ -1,6 +1,7 @@
 from player import Player
 from collections import OrderedDict
 import world
+import items
 
 def play():
 	print("Escape from the Forsaken Forest!")
@@ -18,6 +19,7 @@ def play():
 
 def get_available_actions(room, player):
 	actions = OrderedDict()
+	player.status()
 	print('Choose an action:')
 	if player.inventory:
 		action_adder(actions, 'i', player.print_inventory, 'Print Inventory')
@@ -34,9 +36,9 @@ def get_available_actions(room, player):
 			action_adder(actions, 'e', player.move_east, 'Go East')
 		if world.tile_at(room.x - 1, room.y):
 			action_adder(actions, 'w', player.move_west, 'Go West')
-	if player.hp < 100:
+	if player.hp < 100 and any(isinstance(y, items.Consumable) for y in player.inventory):
 		action_adder(actions, 'h', player.heal, 'Heal')
-	#action_adder(actions, '~', player.override, '') # Only Enable Override function for testing.
+	action_adder(actions, '~', player.override, '') # Only Enable Override function for testing.
 		
 	return actions
 		
@@ -55,7 +57,7 @@ def choose_action(room, player):
 			action()
 			
 		else:
-			print('\nInvalid Action!')
+			print('\nInvalid Action!\n')
 
 play()
 
