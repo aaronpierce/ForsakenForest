@@ -1,20 +1,39 @@
+# python3
+# The Shadow Kingdom RPG
+# Version: "1.1"
+# 12/12/2017
+
+import sys
 from player import Player
 from collections import OrderedDict
 import world
 import items
 
 def play():
-	show_title()
-	world.parse_world_dsl()
-	player = Player()
-	while player.is_alive() and not player.victory:
-		room = world.tile_at(player.x, player.y)
-		print('\n'+room.intro_text()+'\n')
-		room.modify_player(player)
-		if player.is_alive() and not player.victory:
-			choose_action(room, player)
-		elif not player.is_alive():
-			print("Your journey has come to an early end!")
+
+	GameExit = False
+	while not GameExit:
+		show_title()
+		world.parse_world_dsl()
+		player = Player()
+		choice = ''
+		while choice not in ['1', '2', '3']:
+			choice = input('Select an option:\n1. Start New Game\n2. Load Game\n3. Quit\n> ')
+			if choice == '1':
+				pass
+			elif choice == '2':
+				player.load()
+			elif choice == '3':
+				sys.exit()
+		while player.is_alive() and not player.victory:
+			room = world.tile_at(player.x, player.y)
+			print('\n'+room.intro_text()+'\n')
+			room.modify_player(player)
+			if player.is_alive() and not player.victory:
+				choose_action(room, player)
+			elif not player.is_alive():
+				print("\nYour journey has come to an early end!\n")
+				input('Press enter to continue...')
 	
 
 def get_available_actions(room, player):
@@ -38,6 +57,10 @@ def get_available_actions(room, player):
 			action_adder(actions, 'w', player.move_west, 'Go West')
 	if player.hp < 100 and any(isinstance(y, items.Consumable) for y in player.inventory):
 		action_adder(actions, 'h', player.heal, 'Heal')
+		
+	action_adder(actions, '+', player.save, '')
+	action_adder(actions, '-', player.load, '')
+
 	action_adder(actions, '~', player.override, '') # Only Enable Override function for testing.
 		
 	return actions
@@ -45,7 +68,7 @@ def get_available_actions(room, player):
 def action_adder(action_dict, hotkey, action, name):
 	action_dict[hotkey.lower()] = action
 	action_dict[hotkey.upper()] = action
-	if hotkey != '~':									# This is for hiding override control
+	if hotkey not in ['~', '-', '+']:								# This is for hiding override control
 		print('{}: {}'.format(hotkey, name))
 def choose_action(room, player):
 	action = None

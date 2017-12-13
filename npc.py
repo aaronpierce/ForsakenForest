@@ -1,4 +1,5 @@
 import items
+import random
 
 
 class NonPlayableCharacter():
@@ -13,13 +14,15 @@ class Trader(NonPlayableCharacter):
 		self.name = "Trader"
 		self.gold = 1000000
 		self.inventory = [
-			items.CrustyBread(),
-			items.CrustyBread(),
-			items.GreenApple(),
-			items.GreenApple(),
-			items.HealingPotion(),
-			items.HealingPotion(),
-			items.WornSword(),
-			items.FancySword(),
-			items.LunarSword()
-		]
+			items.Consumable('crusty bread'),
+			items.Consumable('crusty bread'),
+			items.Consumable('green apple'),
+			items.Consumable('green apple'),
+			items.Consumable('healing potion'),
+			items.Consumable('healing potion'),
+			items.Weapon('worn sword'),
+			items.Weapon('fancy sword'),
+			items.Weapon('lunar sword')
+			]
+
+			# [items.Weapon(each) for each in random.sample(list(items.WEAPONS), 2)] + [items.Consumable(each) for each in random.sample(list(items.CONSUMABLES), 4)] 

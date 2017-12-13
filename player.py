@@ -1,14 +1,17 @@
 import items
 import world
 import random
+import json
+import os
+from pprint import pprint
 
 class Player:
 	
 	def __init__(self):
 		self.inventory = [
-			items.RustyDagger(),
-			items.CrustyBread(),
-			items.GreenApple()
+			items.Weapon('rusty dagger'),
+			items.Consumable('crusty bread'),
+			items.Consumable('green apple')
 			]
 		self.x = world.start_tile_location[0]
 		self.y = world.start_tile_location[1]
@@ -29,9 +32,16 @@ class Player:
 				print('* {}'.format(item))
 
 	def status(self):
-		print('_________Status_________')
+		if self.gold >= 1000:
+			left, right, bottom = 10, 10, 26
+		elif self.gold >= 100:
+			left, right, bottom = 10, 9, 25
+		else:
+			left, right, bottom = 9, 9, 24
+	
+		print('_' * left + 'Status' + '_' * right)
 		print('Health: {}/100  Gold: {}'.format(self.hp, self.gold))
-		print('¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯¯')
+		print('¯' * bottom)
 
 	def most_powerful_weapon(self):
 		max_damage = 0
@@ -44,7 +54,7 @@ class Player:
 			except AttributeError:
 					pass
 		if best_weapon == None:
-			return items.Fist()
+			return items.Weapon('fist')
 		return best_weapon
 		
 	def attack(self):
@@ -91,6 +101,42 @@ class Player:
 		room = world.tile_at(self.x, self.y)
 		room.check_if_trade(self)
 		
+	def load(self):
+		if os.path.exists('GameEntities/player.json'):
+			with open('GameEntities/player.json', 'r') as f:
+				data = json.load(f)
+				for key, value in data.items():
+					if key == 'inventory':
+						for i in range(len(value)):
+							item = value[i]
+							for k, v in item.items():
+								if k in items.WEAPONS:
+									obj = items.Weapon(k)
+								elif k in items.CONSUMABLES:
+									obj = items.Consumable(k)
+								elif k in items.ITEMS:
+									obj = items.Item(k)
+							value[i] = obj
+					self.__dict__[key] = value
+					
+				print('\nLoad Successful!')
+		else:
+			print('\nNo game saves found...\n\nNew player created!')
+				
+	def save(self):
+		def to_json(obj):
+			return obj.__dict__
+		
+		def inv_catch(obj):
+			return {'{}'.format(obj.name.lower()): obj.__dict__}
+			
+		json_data = to_json(self)
+		
+		with open('GameEntities/player.json', 'w+') as f:
+			f.write(json.dumps(json_data, indent=4, default=inv_catch))
+			
+		print('\nSave Successful!')
+	
 		
 	def move(self, dx, dy):
 		self.x += dx
@@ -111,6 +157,13 @@ class Player:
 	#Built to allow for giving player any items.
 	def override(self):
 		item = input(':: ')
-		if item in items.override.keys():
+		if 'Gold' in item:
+			gold, amount = item.split()
+			self.gold += int(amount)
+			print('\n{} gold overridden to player!'.format(amount))
+		elif item in items.override.keys():
 			self.inventory.append(items.override[item])
 			print('\n{} overridden to player!'.format(items.override[item].name))
+
+
+

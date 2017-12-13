@@ -30,12 +30,12 @@ class EnemyTile(MapTile):
 		super().__init__()
 		self.x = x
 		self.y = y
+		self.enemy = enemies.enemy_spawn()
+		self.alive_text = self.enemy.alive_msg
+		self.dead_text = self.enemy.dead_msg
+		self.drop =  items.drop(self.enemy.drop_table)
 		self.drop_claimed = False
-		self.drop = items.drop_table()
-		enemy = enemies.enemy_spawn()
-		self.enemy = enemy[0]
-		self.alive_text = enemy[1]
-		self.dead_text = enemy[2]
+		
 			
 	def modify_player(self, player):
 		enemy_dmg = int(round(((self.enemy.str / 100) + 1.04) * random.randint(0, self.enemy.dmg)))
@@ -48,10 +48,10 @@ class EnemyTile(MapTile):
 				print('Enemy does {} damage. You have {} HP remaining.\n'.format(enemy_dmg, player.hp))
 		elif not self.enemy.is_alive() and not self.drop_claimed:
 			self.drop_claimed = True
-			if isinstance(self.drop, items.Weapon) or isinstance(self.drop, items.Consumable):
+			if isinstance(self.drop, items.Weapon) or isinstance(self.drop, items.Consumable) or isinstance(self.drop, items.Item):
 				player.inventory.append(self.drop)
 				print('{} was dropped by the {} and added to your inventory!\n'.format(self.drop, self.enemy))
-			else:
+			elif type(self.drop) == type(int()):
 				player.gold += self.drop
 				print('{} Gold was dropped by the {} and added to your inventory!\n'.format(self.drop, self.enemy))
 		
@@ -90,14 +90,20 @@ class TraderTile(MapTile):
 		self.y = y
 
 	def trade(self, player, buyer, seller):
-		equipped = player.most_powerful_weapon()
-		for i, item in enumerate(seller.inventory, 1):
-			if seller == player and item == equipped:
-				print('{}. {} - {} Gold +'.format(i, item.name, item.value)) #◂
-			else:
-				print('{}. {} - {} Gold'.format(i, item.name, item.value))
 		while True:
-			user_input = input('\nChoose an item or press Q to exit: ')
+			equipped = player.most_powerful_weapon()
+			if buyer == player:
+				player.status()
+				print("Trader's Inventory: (Items to buy)")
+			else:
+				player.status()
+				print("Player\'s Inventory: (Items to sell)")
+			for i, item in enumerate(seller.inventory, 1):
+				if seller == player and item == equipped:
+					print('{}. {} - {} Gold +'.format(i, item.name, item.value)) #◂
+				else:
+					print('{}. {} - {} Gold'.format(i, item.name, item.value))
+			user_input = input("\nChoose an item or 'Q' to exit: ")
 			if user_input in ['Q', 'q']:
 				return
 			else:
@@ -105,8 +111,8 @@ class TraderTile(MapTile):
 					choice = int(user_input)
 					to_swap = seller.inventory[choice - 1]
 					self.swap(player, seller, buyer, to_swap)
-				except ValueError:
-					print('Invalid Choice!')
+				except (ValueError, IndexError):
+					print('\nInvalid Choice!\n')
 
 	def swap(self, player, seller, buyer, item):
 		if item.value > buyer.gold:
@@ -119,27 +125,24 @@ class TraderTile(MapTile):
 		else:
 			seller.gold = seller.gold + item.value
 			buyer.gold = buyer.gold - item.value
-		print('Trade complete!')
+		print('\nTrade complete!\n')
 
 	def check_if_trade(self, player):
 		while True:
-			print("\nWould you like to (B)uy, (S)ell, or (Q)uit?")
-			user_input = input()
-			if user_input in ['Q', 'q']:
+			player.status()
+			print('Choose an action:\nb: Buy\ns: Sell\nq: Quit')
+			user_input = input('Action: ').lower()
+			if user_input == 'q':
 				return
-			elif user_input in ['B', 'b']:
-				player.status()
-				print("Here is what\'s available to buy: ")
+			elif user_input == 'b':
 				self.trade(player, buyer=player, seller=self.trader)
-			elif user_input in ['S', 's']:
-				player.status()
-				print("Here is what\'s avaliable to sell: ")
+			elif user_input == 's':
 				self.trade(player, buyer=self.trader, seller=player)
 			else:
-				print("Invalid choice!")
+				print("\nInvalid Action!\n")
 
 	def intro_text(self):
-		return """A frail not-quit-human, not-quit-creature squats in the corner clinking his gold coins together. He looks willing to trade."""
+		return """A frail not-quit-human, not-quit-creature squats in the corner clinking his gold coins together.\nYou hear an eerie voice...\n\n'Hello stranger, up for a trade?'"""
 
 class FindGoldTile(MapTile):
 	def __init__(self, x, y):
@@ -167,7 +170,7 @@ class FindItemTile(MapTile):
 		super().__init__()
 		self.x = x
 		self.y = y
-		self.item = items.drop_table(True)
+		self.item = items.drop('standard', False)
 		self.claimed_text = 'An emptied chest... nothing more to find here. Better move on.'
 		self.unclaimed_text = 'You spot a partially opened chest on the ground. I wonder whats inside...'
 
@@ -187,10 +190,11 @@ class BossTile(MapTile):
 		super().__init__()
 		self.x = x
 		self.y = y
-		self.enemy = enemies.AncientDragon()
+		self.enemy = enemies.Enemy('ancient dragon')
 		self.alive_text = 'An enormous dragon rips through the air with a loud screech and slams to the ground in front of you!!'
 		self.dead_text = 'A slain dragon lays at your feet.'
 		self.key_claimed = False
+		self.reward = items.Item('ancient key')
 
 	def modify_player(self, player):
 		enemy_dmg = int(round(((self.enemy.str / 100) + 1) * random.randint(0, self.enemy.dmg)))
@@ -199,8 +203,8 @@ class BossTile(MapTile):
 			print('Enemy does {} damage. You have {} HP remaining.\n'.format(enemy_dmg, player.hp))
 		if not self.key_claimed and not self.enemy.is_alive():
 			self.key_claimed = True
-			player.inventory.append(items.AncientKey())
-			print('An {} was dropped by the {} and added to your inventory!\n'.format(items.AncientKey(), self.enemy))
+			player.inventory.append(self.reward)
+			print('An {} was dropped by the {} and added to your inventory!\n'.format(self.reward.name, self.enemy))
 		
 		
 	def intro_text(self):
@@ -215,10 +219,10 @@ class AncientChestTile(MapTile):
 		self.item_claimed = False
 		self.claimed_text = 'Alas, my reward for slaying the beast has been claimed.'
 		self.unclaimed_text = 'An enormous chest sunken into the ground. You see what looks like a dragon on the face of the chest. Looks secure....'
-		self.reward = items.AncientSpear()
+		self.reward = items.Weapon('ancient spear')
 	
 	def modify_player(self, player):
-		if any(items.AncientKey().name in y.name for y in player.inventory) and not self.item_claimed:
+		if any(items.Item('ancient key').name in y.name for y in player.inventory) and not self.item_claimed:
 			print('This old key seems to be a snug, but perfect fit. Lets see whats inside...?\n')
 			print('You\'ve found something that looks valuable.\n')
 			print('{} was added to your inventory!\n'.format(self.reward))
