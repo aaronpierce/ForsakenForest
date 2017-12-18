@@ -1,0 +1,22 @@
+{
+    "green apple": {
+        "healing_value": 25,
+        "value": 30,
+        "name": "Green Apple"
+    },
+    "healing potion": {
+        "healing_value": 50,
+        "value": 60,
+        "name": "Healing Potion"
+    },
+    "pill of darkness": {
+        "healing_value": 100,
+        "value": 150,
+        "name": "Pill of Darkness"
+    },
+    "crusty bread": {
+        "healing_value": 10,
+        "value": 12,
+        "name": "Crusty Bread"
+    }
+}

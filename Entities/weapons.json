@@ -1,0 +1,56 @@
+{
+    "rock": {
+        "value": 1,
+        "name": "Rock",
+        "description": "A fist-sized rock, suitable for bludgeoning.",
+        "damage": 5
+    },
+    "rusty dagger": {
+        "value": 20,
+        "name": "Rusty Dagger",
+        "description": "A small dagger with a little rust.",
+        "damage": 10
+    },
+    "rusty sword": {
+        "value": 50,
+        "name": "Rusty Sword",
+        "description": "This sword is starting to rust.",
+        "damage": 15
+    },
+    "worn sword": {
+        "value": 100,
+        "name": "Worn Sword",
+        "description": "This sword is showing its age.",
+        "damage": 20
+    },
+    "fancy sword": {
+        "value": 250,
+        "name": "Fancy Sword",
+        "description": "A noble sword once held by someone important.",
+        "damage": 50
+    },
+    "lunar sword": {
+        "value": 500,
+        "name": "Lunar Sword",
+        "description": "A powerful sword that is powered by the moon.",
+        "damage": 65
+    },
+    "ancient spear": {
+        "value": 550,
+        "name": "Ancient Spear",
+        "description": "An old spear with great hidden power",
+        "damage": 70
+    },
+    "fist": {
+        "value": 0,
+        "name": "Fist",
+        "description": "Bare hands",
+        "damage": 3
+    },
+    "potato": {
+        "value": 1000000,
+        "name": "Potato",
+        "description": "Just a 'tato.",
+        "damage": 10000000
+    }
+}

@@ -1,5 +1,5 @@
 import random
-from GameEntities import ObjectImport
+import extras
 
 class Enemy:
 	def __init__(self, template):
@@ -11,7 +11,7 @@ class Enemy:
 	def is_alive(self):
 		return self.hp > 0
 	
-ENEMIES = ObjectImport.load('enemies')
+ENEMIES = extras.load('enemies')
 
 def enemy_spawn():
 	r = random.random()

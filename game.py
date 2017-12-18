@@ -1,13 +1,9 @@
-# python3
-# The Shadow Kingdom RPG
-# Version: "1.1"
-# 12/12/2017
-
 import sys
 from player import Player
 from collections import OrderedDict
 import world
 import items
+import time
 
 def play():
 
@@ -15,14 +11,19 @@ def play():
 	while not GameExit:
 		show_title()
 		world.parse_world_dsl()
-		player = Player()
 		choice = ''
+		player = Player()
 		while choice not in ['1', '2', '3']:
-			choice = input('Select an option:\n1. Start New Game\n2. Load Game\n3. Quit\n> ')
+			print('\nSelect an option:\n1. Start New Game\n2. Load Game\n3. Quit')
+			choice = input('> ')
 			if choice == '1':
 				pass
 			elif choice == '2':
-				player.load()
+				if player.load() == True:
+					pass
+				else:
+					choice = ''
+					continue
 			elif choice == '3':
 				sys.exit()
 		while player.is_alive() and not player.victory:
@@ -61,7 +62,8 @@ def get_available_actions(room, player):
 	action_adder(actions, '+', player.save, '')
 	action_adder(actions, '-', player.load, '')
 
-	action_adder(actions, '~', player.override, '') # Only Enable Override function for testing.
+	 # Only Enable Override function for testing.
+	#action_adder(actions, '~', player.override, '')
 		
 	return actions
 		
@@ -84,7 +86,7 @@ def choose_action(room, player):
 
 
 def show_title():
-	print('''
+	title = '''
                          .                                               
                      /   ))     |\         )               ).           
                c--. (\  ( `.    / )  (\   ( `.     ).     ( (           
@@ -112,7 +114,12 @@ def show_title():
                    |_|\_\_|_| |_|\__, |\__,_|\___/|_| |_| |_|
                                   __/ |                      
                                  |___/                 
-	''')
+'''
+
+	for line in title.splitlines():
+		print(line)
+		time.sleep(.15)
+
 
 
 play()

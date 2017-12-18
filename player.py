@@ -3,6 +3,7 @@ import world
 import random
 import json
 import os
+import extras
 from pprint import pprint
 
 class Player:
@@ -102,8 +103,9 @@ class Player:
 		room.check_if_trade(self)
 		
 	def load(self):
-		if os.path.exists('GameEntities/player.json'):
-			with open('GameEntities/player.json', 'r') as f:
+		save_file = extras.resource_path(os.path.join('Entities', 'player.json'))
+		if os.path.exists(save_file):
+			with open(save_file, 'r') as f:
 				data = json.load(f)
 				for key, value in data.items():
 					if key == 'inventory':
@@ -120,10 +122,13 @@ class Player:
 					self.__dict__[key] = value
 					
 				print('\nLoad Successful!')
+				return True
 		else:
-			print('\nNo game saves found...\n\nNew player created!')
+			print('\nNo game saves found...')
 				
 	def save(self):
+		save_file = extras.resource_path(os.path.join('Entities', 'player.json'))
+
 		def to_json(obj):
 			return obj.__dict__
 		
@@ -132,7 +137,7 @@ class Player:
 			
 		json_data = to_json(self)
 		
-		with open('GameEntities/player.json', 'w+') as f:
+		with open(save_file, 'w+') as f:
 			f.write(json.dumps(json_data, indent=4, default=inv_catch))
 			
 		print('\nSave Successful!')
@@ -161,6 +166,10 @@ class Player:
 			gold, amount = item.split()
 			self.gold += int(amount)
 			print('\n{} gold overridden to player!'.format(amount))
+		elif 'Health' in item:
+			health, amount = item.split()
+			self.hp += int(amount)
+			print('\n{} health overriden to player!'.format(amount))
 		elif item in items.override.keys():
 			self.inventory.append(items.override[item])
 			print('\n{} overridden to player!'.format(items.override[item].name))

@@ -1,5 +1,5 @@
 import random
-from GameEntities import ObjectImport
+import extras
 
 class Weapon:
 	def __init__(self, template):
@@ -22,10 +22,10 @@ class Item():
 	def __str__(self):
 		return '{}'.format(self.name)
 
-WEAPONS = ObjectImport.load('weapons')
-CONSUMABLES = ObjectImport.load('consumables')
-ITEMS = ObjectImport.load('items')
-TABLES = ObjectImport.load('drop_tables')
+WEAPONS = extras.load('weapons')
+CONSUMABLES = extras.load('consumables')
+ITEMS = extras.load('items')
+TABLES = extras.load('drop_tables')
 
 def drop(table, gold=True):
 	drop = ''
