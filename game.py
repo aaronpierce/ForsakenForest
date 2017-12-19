@@ -1,15 +1,15 @@
 import sys
-from player import Player
 from collections import OrderedDict
+from player import Player
 import world
 import items
-import time
+import extras
 
 def play():
 
 	GameExit = False
 	while not GameExit:
-		show_title()
+		extras.title()
 		world.parse_world_dsl()
 		choice = ''
 		player = Player()
@@ -42,9 +42,9 @@ def get_available_actions(room, player):
 	player.status()
 	print('Choose an action:')
 	if player.inventory:
-		action_adder(actions, 'i', player.print_inventory, 'Print Inventory')
+		action_adder(actions, 'i', player.print_inventory, 'Inventory')
 	if isinstance(room, world.TraderTile):
-		action_adder(actions, 't', player.trade, "Trade")
+		action_adder(actions, 't', player.trade, 'Trade')
 	if (isinstance(room, world.EnemyTile) or isinstance(room, world.BossTile)) and room.enemy.is_alive():
 		action_adder(actions, 'a', player.attack, 'Attack')
 	else:
@@ -58,7 +58,8 @@ def get_available_actions(room, player):
 			action_adder(actions, 'w', player.move_west, 'Go West')
 	if player.hp < 100 and any(isinstance(y, items.Consumable) for y in player.inventory):
 		action_adder(actions, 'h', player.heal, 'Heal')
-		
+	
+	action_adder(actions, '?', extras.game_help, '')
 	action_adder(actions, '+', player.save, '')
 	action_adder(actions, '-', player.load, '')
 
@@ -70,7 +71,7 @@ def get_available_actions(room, player):
 def action_adder(action_dict, hotkey, action, name):
 	action_dict[hotkey.lower()] = action
 	action_dict[hotkey.upper()] = action
-	if hotkey not in ['~', '-', '+']:								# This is for hiding override control
+	if hotkey not in ['~', '-', '+', '?']:								# This is for hiding override control
 		print('{}: {}'.format(hotkey, name))
 def choose_action(room, player):
 	action = None
@@ -80,47 +81,8 @@ def choose_action(room, player):
 		action = available_actions.get(action_input)
 		if action:
 			action()
-			
 		else:
-			print('\nInvalid Action!\n')
-
-
-def show_title():
-	title = '''
-                         .                                               
-                     /   ))     |\         )               ).           
-               c--. (\  ( `.    / )  (\   ( `.     ).     ( (           
-               | |   ))  ) )   ( (   `.`.  ) )    ( (      ) )          
-               | |  ( ( / _..----.._  ) | ( ( _..----.._  ( (           
- ,-.           | |---) V.'-------.. `-. )-/.-' ..------ `--) \._        
- | /===========| |  (   |      ) ( ``-.`\/'.-''           (   ) ``-._   
- | | / / / / / | |--------------------->  <-------------------------_>=-
- | \===========| |                 ..-'./\.`-..                _,,-'    
- `-'           | |-------._------''_.-'----`-._``------_.-----'         
-               | |         ``----''            ``----''                  
-               | |                                                       
-               c--`     
-          _______ _             _____ _               _               
-         |__   __| |           / ____| |             | |              
-            | |  | |__   ___  | (___ | |__   __ _  __| | _____      __
-            | |  | '_ \ / _ \  \___ \| '_ \ / _` |/ _` |/ _ \ \ /\ / /
-            | |  | | | |  __/  ____) | | | | (_| | (_| | (_) \ V  V / 
-            |_|  |_| |_|\___| |_____/|_| |_|\__,_|\__,_|\___/ \_/\_/  
-                    _  ___                 _                 
-                   | |/ (_)               | |                
-                   | ' / _ _ __   __ _  __| | ___  _ __ ___  
-                   |  < | | '_ \ / _` |/ _` |/ _ \| '_ ` _ \ 
-                   | . \| | | | | (_| | (_| | (_) | | | | | |
-                   |_|\_\_|_| |_|\__, |\__,_|\___/|_| |_| |_|
-                                  __/ |                      
-                                 |___/                 
-'''
-
-	for line in title.splitlines():
-		print(line)
-		time.sleep(.15)
-
-
+			print("\nInvalid action - Use '?' for help.\n")
 
 play()
 

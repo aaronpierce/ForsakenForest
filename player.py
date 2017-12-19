@@ -103,7 +103,7 @@ class Player:
 		room.check_if_trade(self)
 		
 	def load(self):
-		save_file = extras.resource_path(os.path.join('Entities', 'player.json'))
+		save_file = extras.check_appdata()
 		if os.path.exists(save_file):
 			with open(save_file, 'r') as f:
 				data = json.load(f)
@@ -127,7 +127,7 @@ class Player:
 			print('\nNo game saves found...')
 				
 	def save(self):
-		save_file = extras.resource_path(os.path.join('Entities', 'player.json'))
+		save_file = extras.check_appdata()
 
 		def to_json(obj):
 			return obj.__dict__
