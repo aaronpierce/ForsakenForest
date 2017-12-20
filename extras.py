@@ -26,6 +26,11 @@ def to_json_format(data):
 # Make sure appdata folder is created for player save
 def check_appdata():
 	app_data = os.getenv('LOCALAPPDATA')
+
+	# This check only exists for iOS Pythonista enviroments or others non-compatible.
+	if app_data == None:
+		app_data = os.getcwd()
+
 	path = os.path.join(app_data, 'TheShadowKingdom')
 
 	try:
