@@ -1,49 +1,51 @@
 import json
-import os 
+import os
 import sys
 import errno
 import time
+import math
 
 def resource_path(relative):
-	if hasattr(sys, "_MEIPASS"):
-		return os.path.join(sys._MEIPASS, relative)
-	return os.path.join(relative)
+    if hasattr(sys, "_MEIPASS"):
+        return os.path.join(sys._MEIPASS, relative)
+    return os.path.join(relative)
 
 
-def load(type):
-	data = ''
-	# with open('Entities/' + type + '.json', 'r') as f: (Before using resource_path function)
-	with open(resource_path(os.path.join('Entities', (type + '.json'))), 'r') as f:
-		data = json.load(f)
-	return data
+def load(class_name):
+    with open(resource_path(os.path.join('Entities', (class_name + '.json'))), 'r') as f:
+        data = json.load(f)
+    return data
 
-# Used only as a utlity to export a file to .json format to be used in game (func not used in game at all)
+
+# Used only as a utility to export a file to .json format to be used in game (func not used in game at all)
 def to_json_format(data):
-	file_name = ''
-	with open(os.path.join('Entities', (file_name + '.json')), 'w+') as savefile:
-		json.dump(data, savefile, indent = 4)
-			
+    file_name = ''
+    with open(os.path.join('Entities', (file_name + '.json')), 'w+') as save_file:
+        json.dump(data, save_file, indent=4)
+
+
 # Make sure appdata folder is created for player save
 def check_appdata():
-	app_data = os.getenv('LOCALAPPDATA')
+    app_data = os.getenv('LOCALAPPDATA')
 
-	# This check only exists for iOS Pythonista enviroments or others non-compatible.
-	if app_data == None:
-		app_data = os.getcwd()
+    # This check only exists for iOS Pythonista environments or others non-compatible.
+    if app_data is None:
+        app_data = os.getcwd()
 
-	path = os.path.join(app_data, 'TheShadowKingdom')
+    path = os.path.join(app_data, 'TheShadowKingdom')
 
-	try:
-		os.makedirs(path)
-	except OSError as exception:
-		if exception.errno != errno.EEXIST:
-			raise
+    try:
+        os.makedirs(path)
+    except OSError as exception:
+        if exception.errno != errno.EEXIST:
+            raise
 
-	player_file = os.path.join(path, 'player.json')
-	return player_file
+    player_file = os.path.join(path, 'player.json')
+    return player_file
+
 
 def game_help():
-	help = '''
+    help = '''
 Help Menu:
 
 Action - Description
@@ -58,12 +60,22 @@ Action - Description
 - (?) : Help - Displays help menu for game functions.
 '''
 
-	print(help)
+    print(help)
 
+def create_exp_table():
+  table = {}
+  points = 0
+  for level in range(200):
+    diff = int(level + 300 * math.pow(2, float(level)/7))
+    points += diff
+    table[level + 1] = int(points / 4)
+  return table
+
+exp_table = create_exp_table()
 
 
 def title():
-	title = '''
+    title_ascii = '''
                          .                                               
                      /   ))     |\         )               ).           
                c--. (\  ( `.    / )  (\   ( `.     ).     ( (           
@@ -93,14 +105,13 @@ def title():
                                  |___/                 
 '''
 
-	for line in title.splitlines():
-		print(line)
-		time.sleep(.1)
-
+    for line in title_ascii.splitlines():
+        print(line)
+        time.sleep(0)
 
 
 def title_new():
-	title = """
+    title_ascii = """
                                                   !_
                                                   |*~=-.,
                                                   |_,-'`
@@ -151,6 +162,6 @@ def title_new():
                           __/ |                      
                          |___/                 
 """
-	for line in title.splitlines():
-		print(line)
-		time.sleep(.1)
+    for line in title_ascii.splitlines():
+        print(line)
+        time.sleep(.1)
